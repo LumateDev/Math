@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import optimize
+import math
 
 
 def func(x1, x2):
@@ -13,6 +13,20 @@ def gradient(x1, x2):
 
 def norm(vector):
     return np.sqrt(vector[0] ** 2 + vector[1] ** 2)
+
+
+def golden_section_search(func, a, b, tol=1e-5):
+    gr = (math.sqrt(5) + 1) / 2  # Золотое сечение
+    c = b - (b - a) / gr
+    d = a + (b - a) / gr
+    while abs(c - d) > tol:
+        if func(c) < func(d):
+            b = d
+        else:
+            a = c
+        c = b - (b - a) / gr
+        d = a + (b - a) / gr
+    return (b + a) / 2
 
 
 def fletcher_reeves_method(start_point, eps1=0.1, eps2=0.15, M=10):
@@ -31,8 +45,13 @@ def fletcher_reeves_method(start_point, eps1=0.1, eps2=0.15, M=10):
         if k >= M:
             break
 
-        a = optimize.minimize_scalar(lambda alpha: func(*(x_values[k] + alpha * d))).x
-        new_point = x_values[k] + a * d
+        def line_search(t):
+            return func(*(x_values[k] + t * d))
+
+        # Используем метод золотого сечения для нахождения оптимального t
+        t_opt = golden_section_search(line_search, a=0, b=1)
+
+        new_point = x_values[k] + t_opt * d
 
         if grad_norm ** 2 < eps2 or k == 0:
             beta = 0
