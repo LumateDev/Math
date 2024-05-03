@@ -24,7 +24,7 @@ def golden_section_search(func, a, b, tol=1e-5):
         d = a + (b - a) / gr
     return (b + a) / 2
 
-def newton_method(x, y, eps1=0.1, eps2=0.15, M=10):
+def newton_rafson_method(x, y, eps1=0.1, eps2=0.15, M=10):
     x_values = [(x, y)]
     k = 0
 
@@ -60,15 +60,15 @@ def newton_method(x, y, eps1=0.1, eps2=0.15, M=10):
     return (x, y), func(x, y), k, x_values
 
 x_start, y_start = 1.5, 1.5
-result, f_result, iterations, x_values = newton_method(x_start, y_start)
-print('Initial function: f(x) = 3x^2 + y^2 - xy + x ')
+result, f_result, iterations, x_values = newton_rafson_method(x_start, y_start)
+print('Исходная функция: f(x) = 3x^2 + y^2 - xy + x ')
 print('x* =', result)
 print('f(x*) =', f_result)
 
-print('Iterations until convergence:', iterations + 1)
-print('Last coordinates of x at each iteration:')
+print('Количество итераций до сходимости:', iterations + 1)
+print('Последние координаты x на каждой итерации:')
 for i, x_val in enumerate(x_values):
-    print(f'Iteration {i + 1}: x1 = {x_val[0]}, x2 = {x_val[1]}, f(x) = {func(*x_val)}')
+    print(f'Итерация {i + 1}: x1 = {x_val[0]}, x2 = {x_val[1]}, f(x) = {func(*x_val)}')
 
 # Visualizing the optimization path
 def img_2d(x_vals, func):

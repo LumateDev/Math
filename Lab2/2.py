@@ -43,9 +43,11 @@ def newton_method(x, y, eps1=0.1, eps2=0.15, M=10):
 
         hess_inv = np.linalg.inv(hessian(x, y))
         direction = np.dot(hess_inv, grad)
-
+        if (np.linalg.det(hess_inv)) > 0:
+            t = 1
+        else:
         # Применение метода золотого сечения для поиска оптимального шага
-        t = golden_section_search(lambda t: func(x - t * direction[0], y - t * direction[1]), 0, 1)
+            t = golden_section_search(lambda t: func(x - t * direction[0], y - t * direction[1]), 0, 1)
 
         x_new = x - t * direction[0]
         y_new = y - t * direction[1]

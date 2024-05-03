@@ -66,7 +66,7 @@ def fletcher_reeves_method(start_point, eps1=0.1, eps2=0.15, M=10):
 
     print('x* =', x_values[-1])
     print('f(x*) =', func(*x_values[-1]))
-    print('k =', len(x_values) - 1)
+    print('k =', len(x_values))
     print('Последние координаты точки x на каждой итерации:')
     for i, x_val in enumerate(x_values):
         print(f'Итерация {i + 1}: x1 = {x_val[0]}, x2 = {x_val[1]}, f(x) = {func(*x_val)}')
